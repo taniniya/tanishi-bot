@@ -1,5 +1,5 @@
 import http from "http";
-http.createServer((req, res) => res.end("OK")).listen(8000);
+http.createServer((req, res) => res.end("AITANITANIは起動完了_'https://discord.com/oauth2/authorize?client_id=1469994677523578984&permissions=8&integration_type=0&scope=bot+applications.commands' ")).listen(8000);
 
 import {
   Client,
