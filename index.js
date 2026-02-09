@@ -1,3 +1,6 @@
+import http from "http";
+http.createServer((req, res) => res.end("OK")).listen(8000);
+
 import {
   Client,
   GatewayIntentBits,
