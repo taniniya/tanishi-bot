@@ -28,7 +28,7 @@ const enabledChannels = new Set();
 // ===== Slash Command =====
 const commands = [
   new SlashCommandBuilder()
-    .setName("aitanitani")
+    .setName("ai")
     .setDescription("AI返信の有効化/無効化")
     .addStringOption(option =>
       option
@@ -53,7 +53,7 @@ client.once("ready", async () => {
     { body: commands }
   );
 
-  console.log("Slash command /aitanitani registered");
+  console.log("Slash command /ai registered");
 });
 
 // ===== 権限チェック =====
@@ -77,7 +77,7 @@ async function generateAIResponse(userMessage) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "arcee-ai/trinity-large-preview:free",
+      model: "poolside/laguna-m.1:free",
       messages: [
         {
           role: "system",
@@ -97,7 +97,7 @@ async function generateAIResponse(userMessage) {
   // ===== エラー時の安全処理 =====
   if (!data.choices || !data.choices[0]) {
     console.error("OpenRouter API Error Response:", data);
-    return "AIが黙り込んでしもうたわ…設定を見直してくれやンゴ";
+    return "AIが死んだぁぁぁ";
   }
 
   return data.choices[0].message.content;
@@ -110,7 +110,7 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!hasPermission(interaction)) {
     await interaction.reply({
-      content: "❌ 貴様にはまだ使えんぞｗ",
+      content: "❌ 権限ひっくw",
       ephemeral: true
     });
     return;
@@ -126,7 +126,7 @@ client.on("interactionCreate", async (interaction) => {
 
   if (mode === "disable") {
     enabledChannels.delete(channelId);
-    await interaction.reply("口にガムテープをつけておいたぞい");
+    await interaction.reply(aiを殺っておいたぞい");
   }
 });
 
@@ -144,9 +144,22 @@ client.on("messageCreate", async (message) => {
 
   } catch (err) {
     console.error(err);
-    message.reply("エラーが起きたぞいクソガキよ");
+    message.reply("エラー起きちゃった..");
   }
 });
+
+const { SlashCommandBuilder } = require('discord.js');
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Pongを返します'),
+	async execute(interaction) {
+		await interaction.reply(`うぇぶそけっとぴん: ${interaction.client.ws.ping}ms\nあいぴーえーぴん: ...`);
+		let msg = await interaction.fetchReply();
+		await interaction.editReply(`うぇぶそけっとぴん: ${interaction.client.ws.ping}ms\nあいぴーえーぴん: ${msg.createdTimestamp - interaction.createdTimestamp}ms`);
+	},
+};
 
 // ===== Login =====
 client.login(process.env.DISCORD_TOKEN);
